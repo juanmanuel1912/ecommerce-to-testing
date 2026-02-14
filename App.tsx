@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { Product, CartItem, View } from './types';
 import { MOCK_PRODUCTS, TEST_CASES } from './constants';
@@ -33,11 +32,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#/', '');
+      const hash = window.location.hash.replace('#/', '').split('?')[0] as View;
       const validViews: View[] = ['shop', 'cart', 'checkout', 'login', 'register', 'test-cases', 'success', 'deploy'];
-      if (validViews.includes(hash as View)) {
-        setView(hash as View);
-      } else {
+      if (validViews.includes(hash)) {
+        setView(hash);
+      } else if (window.location.hash === '' || window.location.hash === '#/') {
         setView('shop');
       }
     };
@@ -486,9 +485,6 @@ const App: React.FC = () => {
                   </button>
                 </p>
               </div>
-              <div className="text-center text-xs text-gray-400">
-                Hint: Use <span className="font-mono">admin / password123</span>
-              </div>
             </div>
           </div>
         )}
@@ -572,18 +568,6 @@ const App: React.FC = () => {
                   Create Account
                 </button>
               </form>
-              <div className="text-center">
-                <p className="text-sm text-gray-500">
-                  Already have an account?{' '}
-                  <button 
-                    id="link-to-login"
-                    onClick={() => navigate('login')}
-                    className="text-indigo-600 font-bold hover:underline"
-                  >
-                    Log in
-                  </button>
-                </p>
-              </div>
             </div>
           </div>
         )}
@@ -619,97 +603,13 @@ const App: React.FC = () => {
                 </div>
               ))}
             </div>
-
-            <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-xl">
-              <h3 className="font-bold text-amber-800 mb-2">Developer Note for QA Engineers</h3>
-              <p className="text-sm text-amber-700 leading-relaxed">
-                Every important element in this sandbox has unique <code>id</code> or <code>data-testid</code> attributes. 
-                Common prefixes include: <code>nav-</code>, <code>btn-</code>, <code>input-</code>, <code>register-</code>, and <code>product-card-</code>.
-                Use these for your XPath or CSS Selectors to ensure stable automation.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {view === 'deploy' && (
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="text-center space-y-4">
-              <div className="inline-block p-3 bg-indigo-100 text-indigo-600 rounded-full">
-                <Globe className="h-8 w-8" />
-              </div>
-              <h1 className="text-4xl font-extrabold text-gray-900">Vercel Deployment Guide</h1>
-              <p className="text-lg text-gray-500">If your changes are not reflecting, follow this checklist.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Vercel Troubleshooting */}
-              <div className="bg-white border rounded-2xl p-8 shadow-sm hover:shadow-md transition space-y-6">
-                <div className="flex items-center justify-between">
-                  <RefreshCw className="h-8 w-8 text-indigo-600" />
-                  <span className="text-xs font-bold px-2 py-1 bg-indigo-100 text-indigo-700 rounded uppercase">Critical</span>
-                </div>
-                <h3 className="text-xl font-bold">Forzar Redespliegue</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">Si subes cambios a GitHub pero no se ven en Vercel:</p>
-                <ol className="text-sm space-y-3 list-decimal list-inside text-gray-700">
-                  <li>Ve a tu dashboard en <strong>Vercel.com</strong>.</li>
-                  <li>Entra en tu proyecto y ve a la pestaña <strong>"Deployments"</strong>.</li>
-                  <li>Busca el último despliegue, haz clic en los 3 puntos y elige <strong>"Redeploy"</strong>.</li>
-                  <li>Marca la casilla <strong>"Clear Cache"</strong> si aparece.</li>
-                </ol>
-              </div>
-
-              {/* GitHub Connection */}
-              <div className="bg-white border rounded-2xl p-8 shadow-sm hover:shadow-md transition space-y-6">
-                <div className="flex items-center justify-between">
-                  <Github className="h-8 w-8 text-gray-900" />
-                  <span className="text-xs font-bold px-2 py-1 bg-gray-100 text-gray-600 rounded uppercase">Check</span>
-                </div>
-                <h3 className="text-xl font-bold">Verificar Rama (Branch)</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">Vercel solo despliega automáticamente la rama principal.</p>
-                <ul className="text-sm space-y-3 list-disc list-inside text-gray-700">
-                  <li>Asegúrate de estar haciendo push a <code>main</code> (o <code>master</code>).</li>
-                  <li>Revisa la pestaña <strong>"Events"</strong> en Vercel para ver si hay errores de compilación.</li>
-                  <li>Verifica que el archivo <code>index.html</code> esté en la raíz del proyecto.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-indigo-600 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
-              <div className="bg-white/20 p-4 rounded-xl">
-                <Info className="h-8 w-8" />
-              </div>
-              <div className="space-y-2 text-center md:text-left">
-                <h4 className="text-xl font-bold">¿Por qué usar Vercel para QA?</h4>
-                <p className="text-indigo-100 text-sm leading-relaxed">
-                  Permite tener "Preview Deployments". Cada vez que haces un cambio, Vercel te da una URL única para probar antes de pasar a producción. Ideal para probar scripts de automatización en diferentes versiones.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <button 
-                onClick={() => navigate('shop')}
-                className="text-gray-500 hover:text-indigo-600 font-medium transition"
-              >
-                ← Return to Shop
-              </button>
-            </div>
           </div>
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 border-t py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-4">
-          <div className="flex items-center space-x-6 text-gray-500 text-sm font-medium">
-            <button onClick={() => navigate('shop')} className="hover:text-indigo-600">Shop</button>
-            <button onClick={() => navigate('test-cases')} className="hover:text-indigo-600">Test Cases</button>
-            <button onClick={() => navigate('deploy')} className="hover:text-indigo-600 flex items-center space-x-1">
-               <Globe className="h-3 w-3" />
-               <span>Deployment Guide</span>
-            </button>
-          </div>
-          <p className="text-gray-400 text-xs">© 2024 Automation Sandbox E-commerce Project. Designed for training and QA automation tests.</p>
+      <footer className="bg-gray-100 border-t py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+          <p>© 2024 Automation Sandbox. Perfect for Selenium/Cypress testing.</p>
         </div>
       </footer>
     </div>
