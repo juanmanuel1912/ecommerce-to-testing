@@ -19,7 +19,8 @@ import {
   Github,
   Zap,
   ExternalLink,
-  Info
+  Info,
+  RefreshCw
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -636,56 +637,40 @@ const App: React.FC = () => {
               <div className="inline-block p-3 bg-indigo-100 text-indigo-600 rounded-full">
                 <Globe className="h-8 w-8" />
               </div>
-              <h1 className="text-4xl font-extrabold text-gray-900">How to Deploy & Share</h1>
-              <p className="text-lg text-gray-500">Follow these steps to host your sandbox and start automated testing.</p>
+              <h1 className="text-4xl font-extrabold text-gray-900">Vercel Deployment Guide</h1>
+              <p className="text-lg text-gray-500">If your changes are not reflecting, follow this checklist.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* GitHub Pages */}
+              {/* Vercel Troubleshooting */}
+              <div className="bg-white border rounded-2xl p-8 shadow-sm hover:shadow-md transition space-y-6">
+                <div className="flex items-center justify-between">
+                  <RefreshCw className="h-8 w-8 text-indigo-600" />
+                  <span className="text-xs font-bold px-2 py-1 bg-indigo-100 text-indigo-700 rounded uppercase">Critical</span>
+                </div>
+                <h3 className="text-xl font-bold">Forzar Redespliegue</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">Si subes cambios a GitHub pero no se ven en Vercel:</p>
+                <ol className="text-sm space-y-3 list-decimal list-inside text-gray-700">
+                  <li>Ve a tu dashboard en <strong>Vercel.com</strong>.</li>
+                  <li>Entra en tu proyecto y ve a la pestaña <strong>"Deployments"</strong>.</li>
+                  <li>Busca el último despliegue, haz clic en los 3 puntos y elige <strong>"Redeploy"</strong>.</li>
+                  <li>Marca la casilla <strong>"Clear Cache"</strong> si aparece.</li>
+                </ol>
+              </div>
+
+              {/* GitHub Connection */}
               <div className="bg-white border rounded-2xl p-8 shadow-sm hover:shadow-md transition space-y-6">
                 <div className="flex items-center justify-between">
                   <Github className="h-8 w-8 text-gray-900" />
-                  <span className="text-xs font-bold px-2 py-1 bg-gray-100 text-gray-600 rounded uppercase">Recommended</span>
+                  <span className="text-xs font-bold px-2 py-1 bg-gray-100 text-gray-600 rounded uppercase">Check</span>
                 </div>
-                <h3 className="text-xl font-bold">GitHub Pages</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">Best for long-term automation and showing your skills to recruiters.</p>
-                <ol className="text-sm space-y-3 list-decimal list-inside text-gray-700">
-                  <li>Create a <strong>new public repository</strong> on GitHub.</li>
-                  <li>Upload all the project files.</li>
-                  <li>Go to <strong>Settings > Pages</strong>.</li>
-                  <li>Select branch <strong>main</strong> and click <strong>Save</strong>.</li>
-                </ol>
-                <div className="pt-4">
-                  <div className="bg-gray-50 p-3 rounded-lg border font-mono text-xs text-gray-500">
-                    URL: your-user.github.io/repo-name
-                  </div>
-                </div>
-              </div>
-
-              {/* Netlify Drop */}
-              <div className="bg-white border rounded-2xl p-8 shadow-sm hover:shadow-md transition space-y-6">
-                <div className="flex items-center justify-between">
-                  <Zap className="h-8 w-8 text-amber-500" />
-                  <span className="text-xs font-bold px-2 py-1 bg-amber-100 text-amber-700 rounded uppercase">Fastest</span>
-                </div>
-                <h3 className="text-xl font-bold">Netlify Drop</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">Instantly shareable URL without needing Git or accounts.</p>
-                <ol className="text-sm space-y-3 list-decimal list-inside text-gray-700">
-                  <li>Save all files in a single folder.</li>
-                  <li>Visit <a href="https://app.netlify.com/drop" target="_blank" className="text-indigo-600 hover:underline">Netlify Drop</a>.</li>
-                  <li><strong>Drag and drop</strong> your folder into the box.</li>
-                  <li>Copy your new public link!</li>
-                </ol>
-                <div className="pt-4">
-                   <a 
-                    href="https://app.netlify.com/drop" 
-                    target="_blank"
-                    className="flex items-center justify-center space-x-2 w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition"
-                  >
-                    <span>Go to Netlify Drop</span>
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </div>
+                <h3 className="text-xl font-bold">Verificar Rama (Branch)</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">Vercel solo despliega automáticamente la rama principal.</p>
+                <ul className="text-sm space-y-3 list-disc list-inside text-gray-700">
+                  <li>Asegúrate de estar haciendo push a <code>main</code> (o <code>master</code>).</li>
+                  <li>Revisa la pestaña <strong>"Events"</strong> en Vercel para ver si hay errores de compilación.</li>
+                  <li>Verifica que el archivo <code>index.html</code> esté en la raíz del proyecto.</li>
+                </ul>
               </div>
             </div>
 
@@ -694,9 +679,9 @@ const App: React.FC = () => {
                 <Info className="h-8 w-8" />
               </div>
               <div className="space-y-2 text-center md:text-left">
-                <h4 className="text-xl font-bold">Why deploy?</h4>
+                <h4 className="text-xl font-bold">¿Por qué usar Vercel para QA?</h4>
                 <p className="text-indigo-100 text-sm leading-relaxed">
-                  Automated testing tools (like Selenium or Playwright) need a public or local URL to interact with. By deploying, you can run your tests from any environment (CI/CD, Local, Cloud) using a stable endpoint.
+                  Permite tener "Preview Deployments". Cada vez que haces un cambio, Vercel te da una URL única para probar antes de pasar a producción. Ideal para probar scripts de automatización en diferentes versiones.
                 </p>
               </div>
             </div>
