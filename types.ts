@@ -1,4 +1,3 @@
-
 export interface Product {
   id: number;
   name: string;
@@ -11,6 +10,13 @@ export interface Product {
 
 export interface CartItem extends Product {
   quantity: number;
+}
+
+export interface UserAccount {
+  name: string;
+  email: string;
+  username: string;
+  password: string;
 }
 
 export interface TestCase {
